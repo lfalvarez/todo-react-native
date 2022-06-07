@@ -4,9 +4,9 @@ import { styles } from './styles';
 import { CustomModal } from './src/components/modal';
 import { ListItem } from './src/components/listItem';
 
-const getRenderItem = (onHandleModal) => {
+const getRenderItem = (onHandleModal, onHandleDone) => {
   return ({item}) => (
-    <ListItem item={item} onHandleDelete={onHandleModal} />
+    <ListItem item={item} onHandleDelete={onHandleModal} onHandleDone={onHandleDone} />
   )
 }
 
@@ -21,6 +21,14 @@ export default function App() {
     setItemSelected({});
     setModalVisible(false);
   }
+  const onHandleDone = (id) => {
+    const finder = (item) => item.id === id;
+    const index = todoList.findIndex(finder);
+    const item = todoList.find(finder);
+    const newTodo = [...todoList]
+    newTodo[index] =  {...todoList[index], done: !item.done}
+    setTodoList(newTodo);
+  }
 
   const onHandleModal = (id) => {
     setItemSelected(todoList.find((item) => item.id === id));
@@ -31,6 +39,7 @@ export default function App() {
     if(!!currentTodo) {
       setTodoList((todoList) => [...todoList, 
         {id: Math.random(),
+          done: false,
         title: currentTodo}])
     }
     setCurrentTodo("");
@@ -51,7 +60,7 @@ export default function App() {
       <SafeAreaView style={styles.container}>
         <FlatList
           data={todoList}
-          renderItem={getRenderItem(onHandleModal)}
+          renderItem={getRenderItem(onHandleModal, onHandleDone)}
           keyExtractor={item => item.id}
           style={styles.list}
         />
