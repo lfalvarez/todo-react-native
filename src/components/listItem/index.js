@@ -6,7 +6,7 @@ export const ListItem = ({item, onHandleDelete, onHandleDone}) => (
 <View style={styles.itemView}>
     <Text>{item.title}</Text>
     <TouchableOpacity onPress={() => onHandleDone(item.id)}>
-      <Text>{item.done ? "✔️" : "x"}</Text>
+      <Text>{item.done ? "✅" : "☐"}</Text>
     </TouchableOpacity>
     <TouchableOpacity onPress={() => onHandleDelete(item.id)}>
       <Text>X</Text>
